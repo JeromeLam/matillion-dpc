@@ -1,0 +1,79 @@
+type: "transformation"
+version: "1.0"
+pipeline:
+  components:
+    PBA_POLICE:
+      type: "table-input"
+      parameters:
+        componentName: "PBA_POLICE"
+        database: "[Environment Default]"
+        schema: "CDC_ORACLE"
+        targetTable: "PBA_POLICE"
+        columnNames:
+        - "NUM_POL"
+        - "COD_GEN"
+        - "NUM_CLI"
+        - "PRI_TOT_TC"
+        - "MNT_ENC_TC"
+        - "PRL_RES_TC"
+        - "DAT_EFF_TC"
+        - "DAT_EXP_TC"
+        - "PRI_TOT_TP"
+        - "MNT_ENC_TP"
+        - "PRL_RES_TP"
+        - "DAT_EFF_TP"
+        - "DAT_EXP_TP"
+        - "PCT_FRA_TC"
+        - "PCT_FRA_TP"
+        - "PCT_TAX_TC"
+        - "PCT_TAX_TP"
+        - "NUM_CLI_TP"
+        - "PRL_TOT_TC"
+        - "PRL_TOT_TP"
+        - "TERME_TC"
+        - "TERME_TP"
+        - "MNT_TAX_TC"
+        - "MNT_TAX_TP"
+        - "TAX_ENC_TC"
+        - "TAX_ENC_TP"
+        - "JOUR_RETRAIT"
+        - "IND_RETRAIT_DERNIER_JOUR_MOIS"
+        timeOffset:
+    Calculator:
+      type: "calculator"
+      sources:
+      - "PBA_POLICE"
+      parameters:
+        componentName: "Calculator"
+        includeInputColumns: "Yes"
+        calculations:
+        - - "1"
+          - "test"
+    Rewrite Table:
+      type: "rewrite-table"
+      sources:
+      - "Calculator"
+      parameters:
+        componentName: "Rewrite Table"
+        warehouse: "[Environment Default]"
+        database: "[Environment Default]"
+        schema: "[Environment Default]"
+        targetTable: "PBA_POLICE"
+        orderBy:
+design:
+  components:
+    PBA_POLICE:
+      position:
+        x: 0
+        "y": 0
+      tempMetlId: 1
+    Calculator:
+      position:
+        x: 120
+        "y": 0
+      tempMetlId: 2
+    Rewrite Table:
+      position:
+        x: 240
+        "y": 0
+      tempMetlId: 3

@@ -57,8 +57,8 @@ pipeline:
     Delete Tables:
       type: "delete-tables"
       transitions:
-        success:
-        - "End Success"
+        unconditional:
+        - "Run pipeline"
       parameters:
         componentName: "Delete Tables"
         database: "[Environment Default]"
@@ -69,6 +69,16 @@ pipeline:
       type: "end-success"
       parameters:
         componentName: "End Success"
+    Run pipeline:
+      type: "run-transformation"
+      transitions:
+        success:
+        - "End Success"
+      parameters:
+        componentName: "Run pipeline"
+        transformationJob: "pipeline"
+        setScalarVariables:
+        setGridVariables:
 design:
   components:
     Start:
@@ -93,6 +103,11 @@ design:
       tempMetlId: 4
     End Success:
       position:
-        x: 480
+        x: 600
         "y": 0
       tempMetlId: 5
+    Run pipeline:
+      position:
+        x: 480
+        "y": 0
+      tempMetlId: 6
