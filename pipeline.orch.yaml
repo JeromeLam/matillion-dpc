@@ -1,0 +1,98 @@
+type: "orchestration"
+version: "1.0"
+pipeline:
+  components:
+    Start:
+      type: "start"
+      transitions:
+        unconditional:
+        - "Create Table"
+      parameters:
+        componentName: "Start"
+    Create Table:
+      type: "create-table"
+      transitions:
+        success:
+        - "Alter Table"
+      parameters:
+        componentName: "Create Table"
+        createReplace: "Create if not exists"
+        database: "[Environment Default]"
+        schema: "[Environment Default]"
+        newTableName: "matillion-dpc-create-table"
+        tableType: "Permanent"
+        columns:
+        - - "ID"
+          - "NUMBER"
+          - "38"
+          - ""
+          - ""
+          - "No"
+          - "No"
+          - ""
+        - - "TEXT"
+          - "VARCHAR"
+          - ""
+          - ""
+          - ""
+          - "No"
+          - "No"
+          - ""
+        defaultDdlCollation:
+        primaryKeys:
+        clusteringKeys:
+        dataRetentionTimeInDays:
+        comment:
+    Alter Table:
+      type: "alter-table"
+      transitions:
+        success:
+        - "Delete Tables"
+      parameters:
+        componentName: "Alter Table"
+        targetTable: "matillion-dpc-create-table"
+        schema: "[Environment Default]"
+        database: "[Environment Default]"
+        searchOptimizationService: "Off"
+    Delete Tables:
+      type: "delete-tables"
+      transitions:
+        success:
+        - "End Success"
+      parameters:
+        componentName: "Delete Tables"
+        database: "[Environment Default]"
+        schema: "[Environment Default]"
+        targetTable:
+        ignoreMissing: "Yes"
+    End Success:
+      type: "end-success"
+      parameters:
+        componentName: "End Success"
+design:
+  components:
+    Start:
+      position:
+        x: 0
+        "y": 0
+      tempMetlId: 1
+    Create Table:
+      position:
+        x: 120
+        "y": 0
+      tempMetlId: 2
+    Alter Table:
+      position:
+        x: 240
+        "y": 0
+      tempMetlId: 3
+    Delete Tables:
+      position:
+        x: 360
+        "y": 0
+      tempMetlId: 4
+    End Success:
+      position:
+        x: 480
+        "y": 0
+      tempMetlId: 5
