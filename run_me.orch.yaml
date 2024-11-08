@@ -76,7 +76,7 @@ pipeline:
         - "End Success"
       parameters:
         componentName: "Run pipeline"
-        transformationJob: "pipeline"
+        transformationJob: "add_data"
         setScalarVariables:
         setGridVariables:
 design:
